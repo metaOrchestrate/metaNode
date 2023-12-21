@@ -4,7 +4,7 @@ TAG ?= v0.12.1 # <- choose your tag release
 
 networks:
 	git remote add -f networks git@github.com:celestiaorg/networks.git
-	git subtree add --prefix networks networks --squash
+	git subtree add --prefix networks networks main --squash
 	git commit -m "Add celestia-networks subtree"
 
 # Add the remote repository as a new subtree in the directory 'app'.
