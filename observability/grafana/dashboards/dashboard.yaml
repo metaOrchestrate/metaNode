@@ -1,0 +1,9 @@
+apiVersion: 1
+
+providers:
+- name: 'infra'
+  orgId: 1
+  folder: 'infra'
+  type: file
+  options:
+    path: /etc/grafana/provisioning/dashboards/infra/

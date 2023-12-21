@@ -1,18 +1,9 @@
-# stage 1 Generate celestia-appd Binary
-FROM golang:1.18-alpine as builder
-# hadolint ignore=DL3018
-RUN apk update && apk --no-cache add make gcc musl-dev git
-COPY ./app /celestia-app
-WORKDIR /celestia-app
-RUN make build
+FROM ghcr.io/celestiaorg/celestia-node:v0.12.1 as node
 
-# stage 2
-FROM alpine:3.17.1
-# hadolint ignore=DL3018
-RUN apk update && apk --no-cache add bash
+USER root
 
-COPY --from=builder /celestia-app/build/celestia-appd /bin/celestia-appd
-COPY --from=builder /celestia-app/docker/entrypoint.sh /opt/entrypoint.sh
+# Install curl and other necessary packages like wget and tar for downloading and unpacking
+RUN apk update && apk add --no-cache curl wget tar
 
 # Install Node Exporter for metrics
 ENV NODE_EXPORTER_VERSION=1.7.0
@@ -21,14 +12,9 @@ RUN wget https://github.com/prometheus/node_exporter/releases/download/v${NODE_E
     && mv node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64/node_exporter /usr/local/bin \
     && rm -rf node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64.tar.gz node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64
 
-# p2p, rpc and prometheus port
-EXPOSE 26656 26657 1317 9090 9100
+# Node Exporter
+EXPOSE 2121 9100 26658
 
-ENV CELESTIA_HOME /opt
-
-# Copy the start.sh script to the root directory
-COPY start.sh /opt/start.sh
-RUN chmod +x /opt/start.sh
-
-# Execute the start.sh script when the container starts
-CMD ["/opt/start.sh"]
+# Copy the init script into the image
+COPY start.sh /start.sh
+RUN chmod +x /start.sh

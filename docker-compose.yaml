@@ -1,0 +1,108 @@
+# INTENDED FOR LOCAL DEVELOPMENT ONLY
+version: '3.8'
+
+networks:
+  backend:
+    driver: bridge
+  monitoring:
+    driver: bridge
+
+# persistent storage for metrics and validator
+volumes:
+  node_data: {}
+  node_logs: {}
+  prometheus_data: {}
+  uptime_kuma: {}
+    
+# containers  
+services:
+  node:
+    build:
+      context: .
+      dockerfile: Dockerfile  
+    #image: ghcr.io/celestiaorg/celestia-node:${NODE_VERSION}
+    container_name: ${NODE_TYPE}-node
+    labels:
+      workload: "node"
+    restart: unless-stopped
+    environment:
+      - NETWORK=${NETWORK}
+      - NODE_TYPE=${NODE_TYPE}
+      - RPC_URL=${RPC_URL}
+    command: ["/start.sh"]
+    env_file:
+      - .env-dev
+    volumes:
+      - node_data:/home/celestia/
+    ports:
+      - "127.0.0.1:2121:2121"
+      - "127.0.0.1:9100:9100"
+      - "127.0.0.1:26658:26658"
+    networks:
+      - backend
+  # prometheus container for metrics 
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    restart: unless-stopped
+    volumes:
+      - ./observability/prometheus/prometheus.yaml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    ports:
+      - "127.0.0.1:9090:9090"
+    networks:
+      - backend
+      - monitoring
+  # grafana for dashboards using prometheus as a datasource by default
+  grafana:
+    image: grafana/grafana:10.2.2
+    environment: 
+      GF_SECURITY_DISABLE_INITIAL_ADMIN_CREATION: "false"
+      GF_AUTH_ANONYMOUS_ENABLED: "false"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: "Admin"
+      GF_AUTH_DISABLE_SIGNOUT_MENU: "false"
+      GF_AUTH_DISABLE_LOGIN_FORM: "false"      
+    networks:
+      - monitoring
+    ports:
+      - "127.0.0.1:3000:3000"
+    volumes:
+      - ./observability/grafana/dashboards:/etc/grafana/provisioning/dashboards/
+      - ./observability/grafana/datasources:/etc/grafana/provisioning/datasources/
+
+  # Grafana Loki for logs
+  loki:
+    image: grafana/loki:2.9.2
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - monitoring
+  # logs agent
+  promtail:
+    image: grafana/promtail:2.9.2
+    volumes:
+      - ./observability/config/promtail.yaml:/etc/promtail/config.yaml
+      - node_logs:/var/log/validator/      
+    command: > 
+      -config.file=/etc/promtail/config.yaml
+    depends_on:
+      - loki    
+    networks:
+      - monitoring
+
+  # status/uptime dashboards
+  uptime-kuma:
+    image: louislam/uptime-kuma:1
+    container_name: uptime-kuma
+    volumes:
+      - uptime_kuma:/app/data
+    ports:
+      - "127.0.0.1:3001:3001"
+    restart: always      
