@@ -1,7 +1,7 @@
 # Docker Compose parameters
 # Start the Docker Compose stack in detached mode
 stack:
-	docker-compose up
+	docker-compose up -d
 
 # Stop and remove the Docker Compose stack
 stack-down:
