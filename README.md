@@ -22,6 +22,16 @@ The stack will deploy multiple services:
 **Grafana** default password is `admin:admin`
 
 ### Deploy a development stack
+Environment Variables example:
+
+```bash
+# Modify ".env-dev" file acordingly 
+
+NODE_VERSION=v0.12.1
+NETWORK=mocha-4
+NODE_TYPE=light
+RPC_URL=full.consensus.mocha-4.celestia-mocha.com
+```
 
 ```bash
 # 1. Build the docker image
