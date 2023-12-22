@@ -1,0 +1,72 @@
+# Project information
+site_name: metaNode
+site_url: https://metaNode.metaOrchestrate.com
+site_author: metaOrchestrate.com
+site_description: >-
+  metaNode is an orchestration stack for deploying nodes for the `celestia` modular blockchain ecosystem.
+
+# Repository
+repo_name: metaOrchestrate/metaNode
+repo_url: https://github.com/metaOrchestrate/metaNode
+
+# Copyright
+copyright: Copyright &copy; metaOrchestrate
+
+# Extensions
+markdown_extensions:
+  - pymdownx.arithmatex:
+      generic: true
+
+# Plugins
+plugins:
+  - tags
+  - search
+
+# Theme
+theme:
+  name: material
+  features:
+    - header.autohide
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.top
+    - navigation.tracking
+    - navigation.tabs    
+    - search.suggest
+    - search.highlight      
+  palette:
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: deep purple
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: deep purple
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+# Additional configuration
+extra:
+  status:
+    new: Recently added
+    deprecated: Deprecated
+  analytics:
+    provider: google
+    property: !ENV GOOGLE_ANALYTICS_KEY
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/celestiaorg
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/CelestiaOrg
+
+# Page tree
+nav:
+  - Home: index.md
+  - Getting started: getting-started.md
+  - Contributing: contributor.md

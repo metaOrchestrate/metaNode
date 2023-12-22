@@ -34,14 +34,11 @@ RPC_URL=full.consensus.mocha-4.celestia-mocha.com
 ```
 
 ```bash
-# 1. Build the docker image
-make stack-build
+# 1. Start a dev stack
+make dev
 
-# 2. Deploy the docker compose stack
-make stack
-
-# 3. Stop docker compose running stack
-make stack-down
+# 2. Stop the stack
+make dev-down
 ```
 
 ### Environment variables
