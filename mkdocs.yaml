@@ -34,23 +34,17 @@ theme:
     - navigation.tabs    
     - search.suggest
     - search.highlight      
-  palette:
-    # Palette toggle for dark mode
-    - media: "(prefers-color-scheme: dark)"
-      scheme: default
-      primary: indigo
-      toggle:
-        icon: material/brightness-4
-        name: Switch to light mode
-
+  palette: 
     # Palette toggle for light mode
-    - media: "(prefers-color-scheme: light)"
-      scheme: slate
-      primary: indigo
+    - scheme: default
       toggle:
-        icon: material/brightness-7
+        icon: material/weather-night
         name: Switch to dark mode
-
+    # Palette toggle for dark mode
+    - scheme: slate
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
 # Additional configuration
 extra:
   status:
