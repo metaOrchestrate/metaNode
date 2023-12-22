@@ -12,7 +12,8 @@ There are several types of nodes that can be deployed to participate in the netw
 
 ### Getting started
 
-The stack will deploy multiple services:
+> The stack will deploy multiple services:
+
 1. **Prometheus**   -> `metrics`
 2. **Grafana**      -> `visibility`
 3. **Celestia**     -> `blockchain`
