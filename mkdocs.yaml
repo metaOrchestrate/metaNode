@@ -68,5 +68,3 @@ extra:
 # Page tree
 nav:
   - Home: index.md
-  - Getting started: getting-started.md
-  - Contributing: contributor.md
