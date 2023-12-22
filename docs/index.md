@@ -22,7 +22,14 @@ The stack will deploy multiple services:
 **Grafana** default password is `admin:admin`
 
 ### Deploy a development stack
-Environment Variables example:
+
+> Clone the repository
+```bash
+git clone git@github.com:metaOrchestrate/metaNode.git
+cd metaNode
+```
+
+> Add environment Variables example:
 
 ```bash
 # Modify ".env-dev" file acordingly 
