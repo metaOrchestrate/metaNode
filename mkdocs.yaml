@@ -37,7 +37,7 @@ theme:
   palette:
     # Palette toggle for dark mode
     - media: "(prefers-color-scheme: dark)"
-      scheme: slate
+      scheme: default
       primary: indigo
       toggle:
         icon: material/brightness-4
@@ -45,7 +45,7 @@ theme:
 
     # Palette toggle for light mode
     - media: "(prefers-color-scheme: light)"
-      scheme: default
+      scheme: slate
       primary: indigo
       toggle:
         icon: material/brightness-7
