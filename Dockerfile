@@ -1,4 +1,4 @@
-FROM ghcr.io/celestiaorg/celestia-node:v0.12.1 as node
+FROM ghcr.io/celestiaorg/celestia-node:${NODE_VERSION} as node
 
 USER root
 
